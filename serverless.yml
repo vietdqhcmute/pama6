@@ -1,0 +1,36 @@
+
+service: pama6
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+functions:
+  writePama6:
+    handler: write.write
+    events:
+      - http:
+          path: writepama6_test
+          method: post
+          cors: true
+
+  queryPama6:
+    handler: query.query
+    events:
+      - http:
+          path: querypama6_test
+          method: post
+          cors: true
+
